@@ -10,7 +10,6 @@ Uploaded reverseshell through an open ftp service. Escalated privileges by abusi
 Use `nmap -p- <ip-addr\>` in order to scan all ports. Then use `nmap -sVC -p 21,3000 <ip-addr\>` in order to perform a deeper scan on the target and its running services.
 
 ![](assets/recon.png)
-
   Use `nc -nvv <ip-addr\>` to grab the FTP service banners, leading to a username.
 
 ![](assets/bannergrab.png)

